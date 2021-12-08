@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Save Colleges</title>
+      <style>
+        span {
+         color: red;
+           font-style: italic;
+      }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3>Add User</h3>
+    <hr>
+
+    <p class="h4 mb-4">Save User details</p>
+
+    <form action="#" th:action="@{/newuser}"
+          th:object="${newUser}" method="POST">
+
+        <!-- Add hidden form field to handle update -->
+        <input type="hidden" th:field="*{id}" />
+        <div>
+        <input type="text" th:field="*{name}"
+               class="form-control mb-2 col-4" placeholder="user name">
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">it is required</p>
+        </div>
+        <br>
+        <div>
+        <input type="password" th:field="*{password}"
+               class="form-control mb-2 col-4" placeholder="password">
+        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert alert-danger">enter more than one character</p>
+        </div>
+        <br>
+        <div>
+        <input type="text" th:field="*{email}"
+               class="form-control mb-2 col-4" placeholder="email">
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger">email is required</p>
+        </div>
+        <br>
+        <div>
+        <input type="text" th:field="*{role}"
+               class="form-control mb-2 col-4" placeholder="role">
+        <p th:if="${#fields.hasErrors('role')}" th:errors="*{role}">enter more than one character</p>
+        </div>
+        <br>
+        <input type="number" th:field="*{enabled}"
+               class="form-control mb-2 col-4" placeholder="enabled">
+
+        <button type="submit" class="btn btn-info col-2">Save</button>
+
+    </form>
+    <hr>
+    <a th:href="@{/showMyLoginPage}">Back to Login page</a>
+
+
+
+</div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+

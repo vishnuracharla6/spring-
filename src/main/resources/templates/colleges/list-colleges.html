@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Colleges list</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3>Colleges list</h3>
+    <hr>
+
+    <!-- Add a button -->
+    <a th:href="@{/colleges/showFormForAdd}"
+       class="btn btn-primary btn-sm mb-3">
+        Add College
+    </a>
+
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>College Name</th>
+            <th>Address</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tempCollege : ${totalColleges}">
+
+            <td th:text="${tempCollege.collegeName}" />
+            <td th:text="${tempCollege.address}" />
+            <td>
+                <!-- Add "update" button/link -->
+                <a th:href="@{/colleges/showFormForUpdate(collegeId=${tempCollege.id})}"
+                   class="btn btn-info btn-sm">
+                    Update
+                </a>
+
+                <!-- Add "delete" button/link -->
+                <a th:href="@{/colleges/delete(collegeId=${tempCollege.id})}"
+                   class="btn btn-danger btn-sm"
+                   onclick="if (!(confirm('Are you sure you want to delete this college?'))) return false">
+                    Delete
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <hr>
+    <a th:href="@{/}">Back to Home</a>
+</div>
+
+</body>
+</html>
+
+
+
