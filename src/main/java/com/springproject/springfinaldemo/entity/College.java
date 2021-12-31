@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Entity
@@ -36,7 +36,6 @@ public class College {
             joinColumns=@JoinColumn(name="college_id"),
             inverseJoinColumns=@JoinColumn(name="user_id")
     )
-    @Getter @Setter
     private List<User> users;
 
     public College()
@@ -45,17 +44,8 @@ public class College {
     }
     public College(String collegeName, String address)
     {
-        this.id=id;
         this.collegeName=collegeName;
         this.address=address;
-    }
-    public void addUser(User theUser) {
-
-        if (users == null) {
-            users = new ArrayList<>();
-        }
-
-        users.add(theUser);
     }
 
 }

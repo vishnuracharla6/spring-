@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface CollegeInterface {
 
-    List<College> findAll();
+    List<College> findAllColleges();
 
-     College findById(int theId);
+     College findByCollegeId(int theId);
 
-     void save(College theCollege);
+     void saveCollege(College theCollege);
 
-     void deleteById(int theId);
+     void deleteByCollegeId(int theId);
 }

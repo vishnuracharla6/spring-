@@ -7,7 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class User {
     @Getter @Setter
     private int id;
 
-    @Column(name="username")
+    @Column(name="name")
     @Getter @Setter
     @NotNull(message = "is Required")
     private String name;
@@ -72,7 +72,7 @@ public class User {
         this.enabled=enabled;
     }
 
-    public void addItem(College thecollege) {
+    public void addCollege(College thecollege) {
 
         if (collegeArray == null) {
             collegeArray = new ArrayList<>();

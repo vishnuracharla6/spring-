@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface UserInterface {
 
-     List<User>findAll();
+     //List<User>findAllUsers();
 
-    User findById(int theId);
+    User findByUserId(int theId);
 
-     void save(User theUser);
+     void saveUser(User theUser);
 
-     void deleteById(int theId);
+     //void deleteByUserId(int theId);
 
-     User searchUser();
+     User getUser();
 }

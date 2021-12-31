@@ -1,44 +1,34 @@
 package com.springproject.springfinaldemo.aspect;
 
-import com.springproject.springfinaldemo.entity.User;
+import com.springproject.springfinaldemo.dto.UserDto;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
-import javax.persistence.Column;
-import java.sql.Driver;
-import java.util.logging.Logger;
+import org.springframework.stereotype.Component;
+
 
 @Aspect
 @Component
 public class Submission {
 
-    Logger logger =Logger.getLogger(Driver.class.getName());
-
-
-    //@Before("execution(void add*())")
-    //@Before("execution(* add*())")
     @Before("execution(public String com.springproject.springfinaldemo.controller.LoginController.processRegister(..))")
     public void beforeSubmissionAdvice(JoinPoint joinPoint) {
-        // display the method signature
-        MethodSignature methodSig = (MethodSignature) joinPoint.getSignature();
 
         Object[] args = joinPoint.getArgs();
         for (Object tempArg : args) {
 
-            if (tempArg instanceof User) {
+            if (tempArg instanceof UserDto) {
 
                 // downcast and print Account specific stuff
-                User theUser = (User) tempArg;
+                UserDto user = (UserDto) tempArg;
 
-                String name= "ROLE_"+theUser.getRole().toUpperCase();
-                theUser.setRole(name);
+                String name= "ROLE_"+user.getRole().toUpperCase();
+                user.setRole(name);
             }
         }
-        logger.info("\n=>>> Executing @Before advice on method");
+
 
     }
 

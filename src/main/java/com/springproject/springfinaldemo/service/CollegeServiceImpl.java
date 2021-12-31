@@ -21,13 +21,13 @@ public class CollegeServiceImpl implements CollegeInterface {
         collegeRepository = theCollegeRepository;
     }
     @Override
-    public List<College> findAll()
+    public List<College> findAllColleges()
     {
         return collegeRepository.findAll();
     }
 
     @Override
-    public College findById(int theId){
+    public College findByCollegeId(int theId){
         Optional<College> result = collegeRepository.findById(theId);
         College theCollege = null;
 
@@ -40,12 +40,12 @@ public class CollegeServiceImpl implements CollegeInterface {
         return theCollege;
     }
      @Override
-     public void save(College theCollege) {
+     public void saveCollege(College theCollege) {
         collegeRepository.save(theCollege);
     }
 
       @Override
-      public void deleteById(int theId) {
+      public void deleteByCollegeId(int theId) {
         Optional<College> result = collegeRepository.findById(theId);
          if (result.isPresent()) {
             collegeRepository.deleteById(theId);
@@ -55,6 +55,5 @@ public class CollegeServiceImpl implements CollegeInterface {
           }
 
     }
-
 
 }

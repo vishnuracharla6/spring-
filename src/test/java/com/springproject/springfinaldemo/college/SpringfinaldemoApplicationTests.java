@@ -1,16 +1,21 @@
-package com.springproject.springfinaldemo;
+package com.springproject.springfinaldemo.college;
 
 import com.springproject.springfinaldemo.dao.CollegeRepository;
 import com.springproject.springfinaldemo.dao.UsersRepository;
+import com.springproject.springfinaldemo.dto.CollegeDto;
+import com.springproject.springfinaldemo.dto.UserDto;
 import com.springproject.springfinaldemo.entity.College;
 import com.springproject.springfinaldemo.entity.User;
-import com.springproject.springfinaldemo.service.CollegeInterface;
+
 import com.springproject.springfinaldemo.service.CollegeServiceImpl;
-import org.junit.jupiter.api.Order;
+import com.springproject.springfinaldemo.service.UserServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.config.web.servlet.oauth2.resourceserver.OAuth2ResourceServerSecurityMarker;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.util.List;
 
@@ -23,75 +28,82 @@ class SpringfinaldemoApplicationTests {
     @Autowired
     private CollegeRepository collegeRepo;
 
+    @Autowired
+    private CollegeServiceImpl collegeService;
 
+    @Autowired
+    private UserServiceImpl userService;
 
     @Autowired
     private UsersRepository userRepo;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Test
     void testCreateCollege() {
-        College college = new College();
-        college.setCollegeName("sr enginerr college");
-        college.setAddress("warangal");
+        CollegeDto collegeDto = new CollegeDto();
+        collegeDto.setCollegeName("sr enginerr college");
+        collegeDto.setAddress("warangal");
+        College college = modelMapper.map(collegeDto, College.class);
         College tempCollege = collegeRepo.save(college);
         assertEquals(tempCollege.getCollegeName(), college.getCollegeName());
         assertEquals(tempCollege.getAddress(), college.getAddress());
     }
-
     @Test
-    public void testReadAllColleges() {
+    void testReadAllColleges() {
 
-        List<College> list = (List<College>) collegeRepo.findAll();
+        List<College> list = (List<College>) collegeService.findAllColleges();
         List<College> savedList = list;
         College college = new College();
         college.setCollegeName("vardhaman engineering college");
         college.setAddress("hyderabad");
-        collegeRepo.save(college);
-        list = (List<College>) collegeRepo.findAll();
+        collegeService.saveCollege(college);
+        list = (List<College>) collegeService.findAllColleges();
         assertEquals(list.size(), savedList.size() + 1);
     }
-
     @Test
-    public void testReadCollege() {
-        College college = collegeRepo.findById(3).get();
-        assertEquals("KMIT", college.getCollegeName());
+     void testReadCollege() {
+
+        College college = collegeService.findByCollegeId(11);
+        assertEquals("JNTUH", college.getCollegeName());
     }
-
-
     @Test
-    public void testUpdateCollege() {
+    void testUpdateCollege() {
         College college = new College();
         college.setAddress("hyd");
         college.setCollegeName("Usmania university");
         College tempCollege = collegeRepo.save(college);
         String address = tempCollege.getAddress();
+        String collegeName=tempCollege.getCollegeName();
         tempCollege.setAddress("hyderabad");
-        collegeRepo.save(tempCollege);
-        assertNotEquals(address, tempCollege.getAddress());
+        collegeService.saveCollege(tempCollege);
+        CollegeDto collegeDto = modelMapper.map(tempCollege, CollegeDto.class);
+        assertNotEquals(address, collegeDto.getAddress());
+        assertEquals(collegeName,collegeDto.getCollegeName());
     }
-
     @Test
-
-    public void testDeleteCollege() {
+     void testDeleteCollege() {
         College college = new College();
         college.setAddress("hyderabad");
         college.setCollegeName("Vasavi engnerring college");
         College tempCollege = collegeRepo.save(college);
         int id = tempCollege.getId();
-        collegeRepo.deleteById(id);
+        collegeService.deleteByCollegeId(id);
         assertThat(collegeRepo.existsById(id)).isFalse();
-
     }
-
     @Test
-    void testCreateUser() {
-        User user = new User();
-        user.setName("abhiram");
-        user.setEmail("abhiram@gmail.com");
-        user.setRole("ROlE_STUDENT");
-        user.setPassword("{bcrypt}" + "$2a$10$NamytTmy.UZ8EJHop8P3We6zeqB3LG99XQYErzEUzLAXd5PoFfQ4m");
-        user.setEnabled(true);
-        User tempUser = userRepo.save(user);
-        assertEquals(user.getEmail(), tempUser.getEmail());
+    void testSaveCollege()
+    {
+        List<College> list = (List<College>) collegeService.findAllColleges();
+        College college = new College("SR","HNK");
+        collegeService.saveCollege(college);
+        List<College> updatedList = (List<College>) collegeService.findAllColleges();
+        assertEquals(list.size()+1, updatedList.size());
     }
+
+
+
+
+
 }

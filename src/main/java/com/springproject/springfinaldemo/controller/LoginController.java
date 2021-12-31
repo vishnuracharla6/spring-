@@ -1,6 +1,6 @@
 package com.springproject.springfinaldemo.controller;
+import com.springproject.springfinaldemo.dto.UserDto;
 import com.springproject.springfinaldemo.entity.User;
-import com.springproject.springfinaldemo.service.CollegeServiceImpl;
 import com.springproject.springfinaldemo.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,32 +11,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
-
+import org.modelmapper.ModelMapper;
 
 @Controller
 public class LoginController {
 
     @Autowired
-    private CollegeServiceImpl collegeServiceImpl;
-
-    @Autowired
     private UserServiceImpl userServiceImpl;
 
-    public LoginController(CollegeServiceImpl theCollegeServiceImpl,UserServiceImpl theUserServiceImpl)
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public LoginController(UserServiceImpl theUserServiceImpl)
     {
-        this.collegeServiceImpl=theCollegeServiceImpl;
         this.userServiceImpl=theUserServiceImpl;
     }
 
     @GetMapping("/showMyLoginPage")
-    public String ShowMyLoginPage() {
-        return "Plain-login";
+    public String showMyLoginPage() {
+        return "plain-login";
     }
 
     @GetMapping("/register")
     public String showRegistrationForm(Model theModel) {
-        User newUser = new User();
-        theModel.addAttribute("newUser", newUser);
+        UserDto userDto = new UserDto();
+        theModel.addAttribute("newUser", userDto);
         return "registration-form";
     }
 
@@ -46,15 +45,16 @@ public class LoginController {
     }
 
     @PostMapping("/newuser")
-    public String processRegister(@Valid @ModelAttribute("newUser") User theUser, BindingResult bindingResult) {
+    public String processRegister(@Valid @ModelAttribute("newUser") UserDto userDto, BindingResult bindingResult) {
 
 
         if (bindingResult.hasErrors())
             return "registration-form";
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(theUser.getPassword());
-        theUser.setPassword("{bcrypt}" + encodedPassword);
-        userServiceImpl.save(theUser);
+        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+        userDto.setPassword("{bcrypt}" + encodedPassword);
+        User user = modelMapper.map(userDto, User.class);
+        userServiceImpl.saveUser(user);
         return "plain-login";
     }
 
